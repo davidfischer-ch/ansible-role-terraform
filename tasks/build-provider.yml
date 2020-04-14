@@ -1,0 +1,41 @@
+---
+
+- block:
+    - name: Clone Terraform provider {{ _terraform_provider.name }}
+      git:
+        repo: '{{ _terraform_provider.url }}'
+        depth: 1
+        dest: '{{ terraform_go_path }}/src/{{ _terraform_provider.path }}'
+        version: '{{ _terraform_provider.version }}'
+      environment: '{{ terraform_clone_environment }}'
+      register: _terraform_provider_git
+
+    - name: Set Terraform provider {{ _terraform_provider.name }} build environment
+      set_fact:
+        _terraform_provider_build_env: >
+          {{ _terraform_provider_git.after }}
+
+    - name: Detect if Terraform provider {{ _terraform_provider.name }} must be reinstalled
+      command:
+        cat '{{ terraform_go_path }}/src/{{ _terraform_provider.path }}.build.cfg'
+      changed_when: >
+        _terraform_provider_build_env|trim != _terraform_provider_build.stdout|default('')|trim
+      check_mode: no
+      failed_when: no
+      register: _terraform_provider_build
+
+    - block:
+        - name: Build Terraform provider {{ _terraform_provider.name }} from source
+          make:
+            chdir: '{{ terraform_go_path }}/src/{{ _terraform_provider.path }}'
+            params:
+              '--jobs': '{{ ansible_processor_cores }}'
+          environment: '{{ terraform_build_environment }}'
+
+        - name: Save build environment
+          copy:
+            content: '{{ _terraform_provider_build_env }}'
+            dest: '{{ terraform_go_path }}/src/{{ _terraform_provider.path }}.build.cfg'
+      when: _terraform_provider_build is change
+  become: '{{ do_become }}'
+  tags: [terraform, packages] # FIXME Remove when this is fixed https://github.com/ansible/ansible/issues/30882

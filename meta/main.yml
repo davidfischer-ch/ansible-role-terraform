@@ -1,0 +1,9 @@
+---
+
+dependencies:
+  - role: go
+    tags: [terraform, dependencies]
+    when: terraform_providers|length > 0
+
+  - role: local-source
+    tags: [terraform, dependencies]

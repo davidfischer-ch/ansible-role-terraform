@@ -1,0 +1,33 @@
+---
+
+- block:
+    - name: Install Terraform build packages
+      package:
+        name: '{{ terraform_build_packages }}'
+        state: present
+      when: terraform_providers|length > 0
+
+    - name: Download Terraform release package
+      get_url:
+        url: '{{ terraform_release_url }}'
+        dest: '{{ local_source_directory }}/{{ terraform_release_url|basename }}'
+        checksum: '{{ terraform_release_checksum }}'
+
+    - name: Extract Terraform release
+      unarchive:
+        src: '{{ local_source_directory }}/{{ terraform_release_url|basename }}'
+        dest: '{{ local_source_directory }}'
+        copy: no
+
+    - name: Copy Terraform runtime
+      copy:
+        src: '{{ local_source_directory }}/terraform'
+        dest: '{{ terraform_binary_path }}'
+        remote_src: yes
+
+    - include_tasks: build-provider.yml
+      loop: '{{ terraform_providers }}'
+      loop_control:
+        loop_var: _terraform_provider
+  become: '{{ do_become }}'
+  tags: [terraform, packages]
