@@ -17,7 +17,6 @@
           {{ terraform_build_params|combine(_terraform_provider.params|default({})) }}
           {{ terraform_build_environment|combine(_terraform_provider.environment|default({})) }}
 
-        - name: Save build environment
     - name: Detect if Terraform provider {{ _terraform_provider.name }} must be reinstalled
       command:
         cat '{{ terraform_go_path }}/src/{{ _terraform_provider.path }}.build.cfg'
