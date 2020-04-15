@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2
+
+### Fix and enhancements
+
+- Add params and env to build context
+
 ## v1.0.1
 
 ### Fix and enhancements
