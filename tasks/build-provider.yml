@@ -28,9 +28,8 @@
         - name: Build Terraform provider {{ _terraform_provider.name }} from source
           make:
             chdir: '{{ terraform_go_path }}/src/{{ _terraform_provider.path }}'
-            params:
-              '--jobs': '{{ ansible_processor_cores }}'
-          environment: '{{ terraform_build_environment }}'
+            params: '{{ terraform_build_params|combine(_terraform_provider.params|default({})) }}'
+          environment: '{{ terraform_build_environment|combine(_terraform_provider.environment|default({})) }}'
 
         - name: Save build environment
           copy:

@@ -35,6 +35,8 @@ TODO VARIABLES
         url: https://github.com/davidfischer-ch/terraform-provider-awx.git
         path: github.com/davidfischer-ch/terraform-provider-awx
         version: v0.2.3
+        environment:
+          BINARY: /usr/local/bin/terraform-provider-awx
 ```
 
 ## License

@@ -1,11 +1,14 @@
 do_become: yes
 
-terraform_build_packages:
-  - make
 terraform_build_environment:
   GOPATH: '{{ terraform_go_path }}'
   GOROOT: '{{ terraform_go_root }}'
   PATH: '{{ terraform_go_root }}/bin:/usr/bin'
+terraform_build_packages:
+  - make
+terraform_build_params:
+  '--jobs': '{{ ansible_processor_cores }}'
+
 terraform_clone_environment: {}
 
 terraform_go_path: '{{ go_path }}'
