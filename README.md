@@ -36,7 +36,8 @@ TODO VARIABLES
         path: github.com/davidfischer-ch/terraform-provider-awx
         version: v0.2.3
         environment:
-          BINARY: /usr/local/bin/terraform-provider-awx
+          BINARY: /usr/local/bin/terraform-provider-awx  # Store provider binary here
+          GOFLAGS: -mod=vendor                           # Force using vendor/
 ```
 
 ## License
