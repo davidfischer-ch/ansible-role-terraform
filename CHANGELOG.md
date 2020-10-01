@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.3
+
+### Fix and enhancements
+
+- Set terraform runtime "mode" to 0755
+
 ## v1.0.2
 
 ### Fix and enhancements
