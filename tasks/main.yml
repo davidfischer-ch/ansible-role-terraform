@@ -24,7 +24,7 @@
         src: '{{ local_source_directory }}/terraform'
         dest: '{{ terraform_binary_path }}'
         remote_src: yes
-        mode: 0755
+        mode: '755'
 
     - include_tasks: build-provider.yml
       loop: '{{ terraform_providers }}'
