@@ -15,7 +15,10 @@ terraform_go_path: '{{ go_path }}'
 terraform_go_root: '{{ go_root }}'
 
 # terraform_release_checksum: sha256:78fd53c0fffd657ee0ab5decac604b0dea2e6c0d4199a9f27db53f081d831a45
-terraform_release_url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
+terraform_arch_map:
+  aarch64: arm64
+  x86_64: amd64
+terraform_release_url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_{{ terraform_arch_map[ansible_architecture] }}.zip
 
 terraform_binary_path: /usr/local/bin/terraform
 
